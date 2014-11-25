@@ -15,6 +15,7 @@
   <div class="container">
   </div>
   <script>
+  var played = [];
 
   $(document).ready(function(){
     getImage();
@@ -23,14 +24,29 @@
   function getImage(){
     $.get('image_update.php', function(data){
       var images = $.parseJSON(data);
-      var i = Math.floor(images.length*Math.random());
-      $('body').css({
-        'background-image': 'url(' + images[i] + ')'
-      });
+      playImage(images);
     });
   }
 
-  setInterval(getImage, 20000);
+  function playImage(images) {
+    var i = Math.floor(images.length*Math.random());
+    // check if this image is already in the played array
+    if( played.indexOf(images[i]) > -1 ) {
+      // prevent an infinite recursion
+      if( images.length == played.length ) {
+        played = [];
+      }
+      getImage();
+      return;
+    }
+    // store the randomly picked image in a played array
+    played.push(images[i]);
+    $('body').css({
+      'background-image': 'url(' + images[i] + ')'
+    });
+  }
+
+  setInterval(getImage, 3000);
   </script>
  </body>
 </html>
