@@ -46,7 +46,7 @@
     });
   }
 
-  setInterval(getImage, 3000);
+  setInterval(getImage, 20000);
   </script>
  </body>
 </html>
